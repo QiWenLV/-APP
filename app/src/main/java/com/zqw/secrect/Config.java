@@ -20,6 +20,8 @@ public class Config {
 
     public static final String KEY_USER = "user";
     public static final String KEY_PASS = "pass";
+    public static final String KEY_PHONENUMBER = "phoneNumber";
+    public static final String KEY_EAMIL = "Email";
     public static final String KEY_PAGE = "page";
     public static final String KEY_PERPAGE = "perpage";
     public static final String KEY_MSG_ID = "msgId";
@@ -29,6 +31,7 @@ public class Config {
 
     public static final String ACTION_LOGIN = "login";
     public static final String ACTION_TIMELINE = "timeline";
+    public static final String ACTION_REGISTERED = "registered";
 
     /**
      * Token用户登录免登陆标签，标签保存7天，如果Token过期，则需要重新登录

@@ -20,7 +20,8 @@ public class AtyLogin extends Activity {
 
     private EditText etUser = null;
     private EditText etPass = null;
-    private Button btnLogin;
+    private Button btnLogin = null;
+    private Button btnRegistered = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,7 @@ public class AtyLogin extends Activity {
         etUser = (EditText) findViewById(R.id.etUser);
         etPass = (EditText) findViewById(R.id.etPass);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnRegistered = (Button) findViewById(R.id.btnRegistered);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,10 +62,26 @@ public class AtyLogin extends Activity {
                     }
                 }, new Login.FailCallback() {
                     @Override
-                    public void onFail() {
-                        Toast.makeText(AtyLogin.this, "用户名或密码不对！", Toast.LENGTH_LONG).show();
+                    public void onFail(int t) {
+                        if(t == 0){
+                            Toast.makeText(AtyLogin.this, "密码不正确！", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(AtyLogin.this, "用户名未注册", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
+            }
+        });
+
+
+        btnRegistered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(AtyLogin.this, AtyRegistered.class);
+//                if(etUser.getText().toString() != null){
+//                    i.putExtra(Config.KEY_USER, etUser.getText().toString());
+//                }
+                startActivity(a);
             }
         });
 

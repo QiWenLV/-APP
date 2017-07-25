@@ -22,6 +22,7 @@
         <activity android:name=".activity.AtyTimeline"/>
         <activity android:name=".activity.AtyLogin"/>
         <activity android:name=".activity.AtyMessage"/>
+        <activity android:name=".activity.AtyRegistered"/>
     </application>
 
 </manifest>

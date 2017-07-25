@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:layout_marginTop="50dp"
     android:orientation="vertical"
 
     tools:context="com.zqw.secrect.MainActivity">
@@ -12,6 +11,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <TextView
@@ -29,6 +29,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <TextView
@@ -46,22 +47,64 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnRegistered"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Registered"/>
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
+            android:text="@string/rePass"/>
+        <EditText
+            android:id="@+id/etRePass"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="@string/Login"/>
-
+            android:inputType="text"
+            android:singleLine="true"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phoneNumber"/>
+        <EditText
+            android:id="@+id/etPhoneNumber"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"/>
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnRegistered"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Registered"/>
 
 
 </LinearLayout>

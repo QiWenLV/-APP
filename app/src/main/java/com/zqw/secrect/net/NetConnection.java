@@ -10,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -28,7 +27,7 @@ public class NetConnection {
             @Override
             protected String doInBackground(Void... voids) {
 
-                StringBuffer paramsStr = new StringBuffer();
+                StringBuilder paramsStr = new StringBuilder();
                 for(int i=0; i<kvs.length; i+=2){
                     paramsStr.append(kvs[i]);
                     paramsStr.append("=");
@@ -65,8 +64,6 @@ public class NetConnection {
                     return result.toString();
 
 
-                } catch (MalformedURLException e){
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

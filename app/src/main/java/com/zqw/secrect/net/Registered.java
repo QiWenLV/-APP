@@ -6,12 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by 启文 on 2017/7/21.
+ * Created by 启文 on 2017/7/25.
  */
-public class Login {
+public class Registered {
 
-    public Login(String user, String pass, final SuccessCallback successCallback, final FailCallback failCallback){
-
+    public Registered(String user, String pass, String phoneNumber, String Email, final SuccessCallback successCallback, final FailCallback failCallback){
         new NetConnection(Config.SERVER_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
@@ -30,6 +29,7 @@ public class Login {
                             }
                             break;
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -41,9 +41,13 @@ public class Login {
                     failCallback.onFail(2);
                 }
             }
-        }, Config.KEY_ACTION, Config.ACTION_LOGIN, Config.KEY_USER, user, Config.KEY_PASS, pass);
-
+        },Config.KEY_ACTION, Config.ACTION_REGISTERED,
+                Config.KEY_USER, user,
+                Config.KEY_PASS, pass,
+                Config.KEY_PHONENUMBER, phoneNumber,
+                Config.KEY_EAMIL,Email);
     }
+
 
     public static interface SuccessCallback{
         void onSuccess(String token);
