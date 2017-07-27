@@ -23,6 +23,7 @@
         <activity android:name=".activity.AtyLogin"/>
         <activity android:name=".activity.AtyMessage"/>
         <activity android:name=".activity.AtyRegistered"/>
+        <activity android:name=".activity.AtyPubMessage"/>
     </application>
 
 </manifest>

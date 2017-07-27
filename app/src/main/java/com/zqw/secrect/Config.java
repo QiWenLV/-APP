@@ -17,6 +17,8 @@ public class Config {
     public static final String KEY_TOKEN = "token";
     public static final String KEY_ACTION = "action";
     public static final String KEY_TIMELINE = "timeline";
+    public static final String KEY_COMMENTS = "comments";
+    public static final String KEY_CONTENT = "content";
 
     public static final String KEY_USER = "user";
     public static final String KEY_PASS = "pass";
@@ -32,6 +34,12 @@ public class Config {
     public static final String ACTION_LOGIN = "login";
     public static final String ACTION_TIMELINE = "timeline";
     public static final String ACTION_REGISTERED = "registered";
+    public static final String ACTION_GET_COMMENT = "get_comment";
+    public static final String ACTION_PUB_COMMENT = "pub_comment";
+    public static final String ACTION_PUBLISH = "publish";
+
+    public static final int ACITVITY_RESULT_NEED_REFRESH = 10000;
+
 
     /**
      * Token用户登录免登陆标签，标签保存7天，如果Token过期，则需要重新登录

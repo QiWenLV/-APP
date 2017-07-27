@@ -1,4 +1,4 @@
-package com.zqw.secrect.activity;
+package com.zqw.secrect.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -71,6 +71,10 @@ public class AtyTimelineMessageListAdapter extends BaseAdapter {
     }
 
     private List<Message> data = new ArrayList<>();
+    IUninstall iUninstall;
+    public void setiUninstall(IUninstall iUninstall){
+        this.iUninstall = iUninstall;
+    }
 
     public Context getContext() {
         return context;
