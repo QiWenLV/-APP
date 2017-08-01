@@ -1,7 +1,5 @@
 package com.zqw.secrect.net;
 
-import android.util.Log;
-
 import com.zqw.secrect.Config;
 
 import org.json.JSONArray;
@@ -32,11 +30,10 @@ public class Timeline {
                                 JSONObject msgObj;
                                 for(int i=0; i<msgsJsonArray.length(); i++){
                                     msgObj = msgsJsonArray.getJSONObject(i);
-                                    msgs.add(new Message(msgObj.getString(Config.KEY_MSG_ID), msgObj.getString(Config.KEY_MSG), msgObj.getString(Config.KEY_USER)));
+                                    msgs.add(new Message(msgObj.getString(Config.KEY_DATE), msgObj.getString(Config.KEY_MSG), msgObj.getString(Config.KEY_USER),msgObj.getString(Config.KEY_MSG_ID)));
                                 }
-                                Log.i("TEST", "msgs");
                                 successCallback.onSuccess(obj.getInt(Config.KEY_PAGE), obj.getInt(Config.KEY_PERPAGE), msgs);
-                                Log.i("TEST", "msgs");
+
                             }
                             break;
                         default:

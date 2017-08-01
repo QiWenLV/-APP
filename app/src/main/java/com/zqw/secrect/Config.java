@@ -12,13 +12,13 @@ public class Config {
     public static final String CHARSET = "utf-8";
 
     public static final String APP_ID = "com.zqw.secret";
-    public static final String SERVER_URL = "http://10.0.2.2:8080/TalkRoom/talkRoom";
+    public static final String SERVER_URL = "http://10.0.2.2:8080/Secrect/secrect";
+   // public static final String SERVER_URL = "http://10.0.2.2:8080/talkroom";
 
     public static final String KEY_TOKEN = "token";
     public static final String KEY_ACTION = "action";
     public static final String KEY_TIMELINE = "timeline";
     public static final String KEY_COMMENTS = "comments";
-    public static final String KEY_CONTENT = "content";
 
     public static final String KEY_USER = "user";
     public static final String KEY_PASS = "pass";
@@ -28,6 +28,8 @@ public class Config {
     public static final String KEY_PERPAGE = "perpage";
     public static final String KEY_MSG_ID = "msgId";
     public static final String KEY_MSG = "msg";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_CONTENT = "content";
 
     public static final String KEY_STATUS = "status";
 

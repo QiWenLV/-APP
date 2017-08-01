@@ -55,12 +55,13 @@ public class NetConnection {
                     //按行来读取
                     BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream(), Config.CHARSET));
                     String line = null;
+                    Log.i("TEST",">"+br.toString());
                     StringBuffer result = new StringBuffer();
                     Log.i("TEST",">>>"+url);
                     while ((line = br.readLine()) != null){
                         result.append(line);
                     }
-                    Log.i("TEST",">!"+result);
+                    Log.i("TEST",">!"+result.toString());
                     return result.toString();
 
 

@@ -82,7 +82,7 @@ public class AtyMessage extends ListActivity {
 
 
     public void GetComments(){
-        final ProgressDialog pd = ProgressDialog.show(this, "uijmk","hjkk");
+        final ProgressDialog pd = ProgressDialog.show(this, "。。。","请稍等。。");
 
         new GetComment(user, token, msgId, 1, 20, new GetComment.SuccessCallback() {
             @Override
@@ -98,7 +98,11 @@ public class AtyMessage extends ListActivity {
                 if(errorCode == 2){
                     startActivity(new Intent(AtyMessage.this, AtyLogin.class));
                     finish();
+                }else if(errorCode == 3){
+                    pd.dismiss();
+                    Toast.makeText(AtyMessage.this, "这条消息没有评论", Toast.LENGTH_LONG).show();
                 }else{
+                    pd.dismiss();
                     Toast.makeText(AtyMessage.this, "加载失败", Toast.LENGTH_LONG).show();
                 }
             }

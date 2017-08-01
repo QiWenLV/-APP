@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0"
+    >
+  <display-name>SecrectServlet</display-name>
+  
+  <!-- 配置当前WEB应用的初始化参数 -->
+  
+
+    <filter>  
+   		<filter-name>encodingfilter</filter-name>  
+    	<filter-class>com.secrect.EncodingFilter</filter-class>  
+    	<init-param>  
+   			 <param-name>encoding</param-name>  
+   			 <param-value>UTF-8</param-value>  
+   		 </init-param>  
+    </filter>  
+    
+    <filter-mapping>  
+    	<filter-name>encodingfilter</filter-name>  
+  	  <url-pattern>/*</url-pattern>  
+    </filter-mapping>  
+  
+   <!-- 配置和映射 Servlet -->
+  <servlet>
+      <!-- Servlet 注册的名字 -->
+      <servlet-name>Secrect</servlet-name>
+       <!-- Servlet 的全类名 -->
+      <servlet-class>com.secrect.SecrectServlet</servlet-class>
+      
+      
+  </servlet>
+  
+  <servlet-mapping>
+       <!-- 需要和某个Servlet节点的 Servlet-name 子节点的文本节点一致 -->
+      <servlet-name>Secrect</servlet-name>
+
+       <!-- 映射具体的访问路径：	/代表当前WEB应用的根目录 -->
+      <url-pattern>/secrect</url-pattern>
+  </servlet-mapping>
+  
+  
+
+
+</web-app>

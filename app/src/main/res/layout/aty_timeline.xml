@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:background="#f2bdf1">
+        android:background="@color/menuTimeline">
 
     </android.support.v7.widget.Toolbar>
 

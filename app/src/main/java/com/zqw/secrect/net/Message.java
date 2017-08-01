@@ -9,11 +9,13 @@ public class Message {
     private String msgID = null;
     private String msg = null;
     private String user =null;
+    private String date = null;
 
-    public Message(String msgID, String msg, String user){
+    public Message(String date, String msg, String user, String msgID){
         this.msg = msg;
-        this.msgID = msgID;
+        this.date = date;
         this.user = user;
+        this.msgID = msgID;
     }
 
     public String getMsg() {
@@ -26,5 +28,9 @@ public class Message {
 
     public String getMsgID() {
         return msgID;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

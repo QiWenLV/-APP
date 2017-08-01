@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -68,7 +69,7 @@ public class AtyTimeline extends AppCompatActivity implements IUninstall, Adapte
                     Intent i = new Intent(AtyTimeline.this, AtyPubMessage.class);
                     i.putExtra(Config.KEY_USER, user);
                     i.putExtra(Config.KEY_TOKEN, token);
-                    startActivityForResult(i, 0);
+                    startActivityForResult(i, 1);
 
                     break;
             }
@@ -107,23 +108,11 @@ public class AtyTimeline extends AppCompatActivity implements IUninstall, Adapte
         Intent k = new Intent(AtyTimeline.this, AtyMessage.class);
         k.putExtra(Config.KEY_MSG, msg.getMsg());
         k.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
-        k.putExtra(Config.KEY_USER,msg. getUsre());
+        k.putExtra(Config.KEY_USER,user);
         k.putExtra(Config.KEY_TOKEN, token);
         startActivity(k);
     }
 
-//    @Override
-//    protected void onListItemClick(ListView l, View v, int position, long id) {
-//        super.onListItemClick(l, v, position, id);
-//
-//        Message msg = adapter.getItem(position);
-//        Intent i = new Intent(AtyTimeline.this, AtyMessage.class);
-//        i.putExtra(Config.KEY_MSG, msg.getMsg());
-//        i.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
-//        i.putExtra(Config.KEY_USER,msg. getUsre());
-//        i.putExtra(Config.KEY_TOKEN, token);
-//        startActivity(i);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,9 +137,10 @@ public class AtyTimeline extends AppCompatActivity implements IUninstall, Adapte
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       switch (requestCode){
+       switch (resultCode){
            case Config.ACITVITY_RESULT_NEED_REFRESH:
                loadMessage();
+               Log.i("","这里重新加载了");
                break;
            default:
                break;
