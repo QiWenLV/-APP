@@ -12,7 +12,7 @@ public class Config {
     public static final String CHARSET = "utf-8";
 
     public static final String APP_ID = "com.zqw.secret";
-    public static final String SERVER_URL = "http://10.0.2.2:8080/Secrect/secrect";
+    public static final String SERVER_URL = "http://123.207.11.223:8080/Secrect/secrect";
    // public static final String SERVER_URL = "http://10.0.2.2:8080/talkroom";
 
     public static final String KEY_TOKEN = "token";

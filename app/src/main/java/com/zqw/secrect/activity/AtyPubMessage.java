@@ -46,7 +46,7 @@ public class AtyPubMessage extends Activity{
                 new Publish(user, token, etMsgContent.getText().toString(), new Publish.SuccessCallback() {
                     @Override
                     public void onSuccess() {
-                        setResult(Config.ACITVITY_RESULT_NEED_REFRESH);
+                        setResult(Config.ACITVITY_RESULT_NEED_REFRESH); //回调
 
                         Toast.makeText(AtyPubMessage.this, "发表消息成功", Toast.LENGTH_LONG).show();
                         finish();
