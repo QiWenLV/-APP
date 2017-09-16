@@ -1,7 +1,8 @@
 package com.zqw.secrect.fragment;
 
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
+import com.zqw.secrect.activity.AtyMessage;
 import com.zqw.secrect.adapter.AtyTimelineMessageListAdapter;
 import com.zqw.secrect.adapter.IUninstall;
 import com.zqw.secrect.net.Message;
@@ -26,28 +28,33 @@ import java.util.List;
 /**
  * Created by 启文 on 2017/9/7.
  */
-public class FgtSecrect extends Fragment implements IUninstall, AdapterView.OnItemClickListener{
+public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItemClickListener {
 
     private String user;
     private String token;
     private AtyTimelineMessageListAdapter adapter = null;
     private ListView list;
- //   CallBackValuel callBackValue;
+
+    //   CallBackValuel callBackValue;
 
 
 
+    public FragInfo(String user, String token){
+        this.user = user;
+        this.token = token;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragments_secrect, container, false);
+        View rootView = inflater.inflate(R.layout.fragments_infi, container, false);
 
         Bundle bundle = getArguments();
         if(bundle != null){
             user = bundle.getString(Config.KEY_USER);
             token = bundle.getString(Config.KEY_TOKEN);
         }
-        Log.i("TEXT", user+"********"+token);
+        Log.i("TEXT", user+"**user***token***"+token);
 
         list = (ListView) rootView.findViewById(R.id.list_timeline);
         adapter = new AtyTimelineMessageListAdapter(getActivity());
@@ -61,19 +68,16 @@ public class FgtSecrect extends Fragment implements IUninstall, AdapterView.OnIt
         return rootView;
     }
 
-
-
-
     /**
      * 加载消息
      */
-    private void loadMessage(){
+    public void loadMessage(){
 
-        final ProgressDialog pd = ProgressDialog.show(getActivity(), "..." , "正在加载...");
+        //final ProgressDialog pd = ProgressDialog.show(getActivity(), "..." , "正在加载...");
         new Timeline(user, token, 1, 20, new Timeline.SuccessCallback() {
             @Override
             public void onSuccess(int pag, int perpag, List<Message> timeline) {
-                pd.dismiss();
+               // pd.dismiss();
                 //向适配器添加数据
                 adapter.clear();
                 adapter.addAll(timeline);
@@ -81,7 +85,7 @@ public class FgtSecrect extends Fragment implements IUninstall, AdapterView.OnIt
         }, new Timeline.FailCallback() {
             @Override
             public void onFail() {
-                pd.dismiss();
+               // pd.dismiss();
                 Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
             }
         });
@@ -90,18 +94,19 @@ public class FgtSecrect extends Fragment implements IUninstall, AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Message msg = adapter.getItem(i);
-//        Intent k = new Intent(getActivity(), AtyMessage.class);
-//        k.putExtra(Config.KEY_MSG, msg.getMsg());
-//        k.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
-//        k.putExtra(Config.KEY_USER,user);
-//        k.putExtra(Config.KEY_TOKEN, token);
-//        this.startActivityForResult(k);
-        Bundle bundle = new Bundle();
-        bundle.putString(Config.KEY_MSG, msg.getMsg());
-        bundle.putString(Config.KEY_MSG_ID, msg.getMsgID());
-        bundle.putString(Config.KEY_USER,user);
-        bundle.putString(Config.KEY_TOKEN, token);
+        Intent k = new Intent(getActivity(), AtyMessage.class);
+        k.putExtra(Config.KEY_MSG, msg.getMsg());
+        k.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
+        k.putExtra(Config.KEY_USER,user);
+        k.putExtra(Config.KEY_TOKEN, token);
+        startActivity(k);
+
       //  callBackValue.SendMessageValue(bundle);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
 
@@ -111,7 +116,7 @@ public class FgtSecrect extends Fragment implements IUninstall, AdapterView.OnIt
 //    @Override
 //    public void onAttach(Activity activity) {
 //        super.onAttach(getActivity());
-//        callBackValue = (CallBackValuel) getActivity();
+//        UpdateCallBack = (AtyTimeline.UpdateCallBack) getActivity();
 //    }
 
 //    @Override

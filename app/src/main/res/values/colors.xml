@@ -4,4 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="menuTimeline">#f2bdf1</color>
+
+
+    <color name="Separated">#C0C7C6</color>
+    <color name="tv_normal">#262726</color>
+    <color name="tv_pre">#16982b</color>
+    
+    <color name="title_text">#ffffff</color>
+
+
+    <color name="toolbar_background">#2DAEB9</color>
 </resources>

@@ -13,7 +13,7 @@ import com.zqw.secrect.R;
 /**
  * Created by 启文 on 2017/9/7.
  */
-public class FgtFriend extends Fragment {
+public class FragFriend extends Fragment {
 
     private String user;
     private String token;

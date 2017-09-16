@@ -73,7 +73,9 @@ public class AtyTimelineMessageListAdapter extends BaseAdapter {
     }
 
     private List<Message> data = new ArrayList<>();
+
     IUninstall iUninstall;
+
     public void setiUninstall(IUninstall iUninstall){
         this.iUninstall = iUninstall;
     }

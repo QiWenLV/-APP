@@ -33,17 +33,11 @@ public class AtyMessage extends ListActivity {
         adapter = new AtyMessageCommentListAdapter(this);
         setListAdapter(adapter);
 
-//        Intent data = getIntent();
-//        user = data.getStringExtra(Config.KEY_USER);
-//        msg = data.getStringExtra(Config.KEY_MSG);
-//        msgId = data.getStringExtra(Config.KEY_MSG_ID);
-//        token = data.getStringExtra(Config.KEY_TOKEN);
-
-        user = bundle.getString(Config.KEY_USER);
-        msg = bundle.getString(Config.KEY_MSG);
-        msgId  = bundle.getString(Config.KEY_MSG_ID);
-        token = bundle.getString(Config.KEY_TOKEN);
-
+        Intent data = getIntent();
+        user = data.getStringExtra(Config.KEY_USER);
+        msg = data.getStringExtra(Config.KEY_MSG);
+        msgId = data.getStringExtra(Config.KEY_MSG_ID);
+        token = data.getStringExtra(Config.KEY_TOKEN);
 
 
         etCommrnt = (EditText) findViewById(R.id.etComment);
