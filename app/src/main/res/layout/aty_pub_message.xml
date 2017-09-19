@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
 
     tools:context="com.zqw.secrect.MainActivity">
 
@@ -24,20 +23,61 @@
             android:textSize="16sp" />
     </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/etMessage"
-        android:gravity="left"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:inputType="none"/>
+    <View
+        android:id="@+id/view_one"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/Separated"
+        android:layout_below="@id/btnPubMsg_tb"/>
 
-    <Button
-        android:id="@+id/btnPubMsg"
+    <EditText
+        android:id="@+id/etMessage_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Publish_message"/>
+        android:hint="标题(可省略)"
+        android:textColorHint="@color/Separated"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:inputType="none"
+        android:layout_below="@id/view_one"/>
+
+    <View
+        android:id="@+id/view_two"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/Separated"
+        android:layout_below="@id/etMessage_title"/>
+    <EditText
+        android:id="@+id/etMessage_content"
+        android:gravity="left"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="分享你想说的"
+        android:textColorHint="@color/Separated"
+        android:singleLine="false"
+        android:inputType="none"
+        android:layout_below="@id/view_two"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/btn_picture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left"
+            android:scaleType="center"
+            android:src="@drawable/btn_picture" />
+    </LinearLayout>
 
 
 
-</LinearLayout>
+
+
+</RelativeLayout>

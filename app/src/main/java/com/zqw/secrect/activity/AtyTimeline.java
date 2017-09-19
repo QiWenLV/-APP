@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luck.picture.lib.entity.LocalMedia;
 import com.zqw.secrect.BaseActivity;
 import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
@@ -58,7 +58,7 @@ public class AtyTimeline extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.aty_timeline);
 
-        setTitle("这是标题");
+        setTitle("好友秘密");
      //   setBackArrow();
         setToolBarMenuOnclick(new mainToolBarMenuClick());
 
@@ -69,8 +69,8 @@ public class AtyTimeline extends BaseActivity {
 //
 //        toolbar.setOnMenuItemClickListener(onMenuItemClick);
 //
-//        user = getIntent().getStringExtra(Config.KEY_USER);
-//        token = getIntent().getStringExtra(Config.KEY_TOKEN);
+        user = getIntent().getStringExtra(Config.KEY_USER);
+        token = getIntent().getStringExtra(Config.KEY_TOKEN);
 
 
         initView();
@@ -339,11 +339,16 @@ public class AtyTimeline extends BaseActivity {
             String msg = "";
             switch (item.getItemId()) {
                 case R.id.menuShowAddMessage:
-                    Toast.makeText(AtyTimeline.this, "refresh", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(AtyTimeline.this, AtyPubMessage.class);
-                    i.putExtra(Config.KEY_USER, user);
-                    i.putExtra(Config.KEY_TOKEN, token);
-                    startActivityForResult(i, 1);
+                 //  if(user != null){
+                       Intent i = new Intent(AtyTimeline.this, AtyPubMessage.class);
+                       i.putExtra(Config.KEY_USER, user);
+                       i.putExtra(Config.KEY_TOKEN, token);
+                       startActivityForResult(i, 1);
+               //    }else{
+              //         Intent a = new Intent(AtyTimeline.this, AtyLogin.class);
+               //        startActivity(a);
+                //   }
+
                     break;
 //                case R.id.action_message:
 //                    Toast.makeText(context, "message", Toast.LENGTH_SHORT).show();
@@ -376,17 +381,26 @@ public class AtyTimeline extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode){
             case Config.ACITVITY_RESULT_NEED_REFRESH:
+//                FragmentManager manager = getSupportFragmentManager();
+//                FragInfo fragInfo = (FragInfo) manager.findFragmentById(R.id.id_viewwpager);
+//               // FragInfo fragInfo = new FragInfo(user, token);
+//                Log.i("TEXT","这里重新加载了");
+//                fragInfo.loadMessage();
 
-                FragmentManager manager = getSupportFragmentManager();
-                FragInfo fragInfo = (FragInfo) manager.findFragmentById(R.id.id_viewwpager);
-                fragInfo.loadMessage();
-
-
-                Log.i("TEST","这里重新加载了");
+                FragInfo fragment = (FragInfo) getSupportFragmentManager().findFragmentByTag(
+                        "android:switcher:"+R.id.id_viewwpager+":0");
+                if(fragment != null)
+                {
+                    if(fragment.getView() != null)
+                    {
+                        fragment.loadMessage();
+                    }
+                }
                 break;
            default:
                break;
        }
     }
 
+    private List<LocalMedia> selectList = new ArrayList<>();
 }

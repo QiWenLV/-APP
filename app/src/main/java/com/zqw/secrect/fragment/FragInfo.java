@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
-import com.zqw.secrect.activity.AtyMessage;
+import com.zqw.secrect.activity.AtyMessageContent;
 import com.zqw.secrect.adapter.AtyTimelineMessageListAdapter;
 import com.zqw.secrect.adapter.IUninstall;
 import com.zqw.secrect.net.Message;
@@ -94,7 +94,7 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Message msg = adapter.getItem(i);
-        Intent k = new Intent(getActivity(), AtyMessage.class);
+        Intent k = new Intent(getActivity(), AtyMessageContent.class);
         k.putExtra(Config.KEY_MSG, msg.getMsg());
         k.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
         k.putExtra(Config.KEY_USER,user);
@@ -108,6 +108,37 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+    @Override
+    public void OnClickView(int i, View v) {
+        Message msg = adapter.getItem(i);
+
+        switch (v.getId()){
+            case R.id.tv_user_name:
+                Log.i("TEXT", "点击了用户名"+msg.getUser());
+                Toast.makeText(getActivity(), "点击了用户名"+msg.getUser(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_share:
+                Log.i("TEXT", "点击了分享"+i);
+                Toast.makeText(getActivity(), "点击了分享"+i, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_collection:
+                Log.i("TEXT", "点击了收藏"+i);
+                Toast.makeText(getActivity(), "点击了收藏"+i, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_fabulous:
+                Log.i("TEXT", "点击了赞"+i);
+                Toast.makeText(getActivity(), "点击了赞"+i, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_comment:
+                Log.i("TEXT", "点击了评论"+i);
+                Toast.makeText(getActivity(), "点击了评论"+i, Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+    }
+
+
 
 
     /**
