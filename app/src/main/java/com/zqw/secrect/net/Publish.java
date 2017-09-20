@@ -54,7 +54,7 @@ public class Publish {
         }, Config.KEY_ACTION, Config.ACTION_PUBLISH,
                 Config.KEY_USER, user,
                 Config.KEY_TOKEN, token,
-                Config.KEY_MSG, msg);
+                Config.KEY_MSG_CONTEXT, msg);
     }
 
 

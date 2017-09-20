@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 import com.mysql.jdbc.Statement;
 
 public class Uits {
-	public static final String SQLPATH = "jdbc:mysql://localhost:3306/talkroom";
+	public static final String SQLPATH = "jdbc:mysql://localhost:3306/secrect";
 	public static final String SQLUSER = "root";
 	public static final String SQLPASS = "root";
 	
@@ -20,20 +20,48 @@ public class Uits {
 	public static final String KEY_ACTION = "action";
 	public static final String KEY_TIMELINE = "timeline";
 
+	/*
+	 * 用户
+	 */
+	public static final String KEY_USER_ID = "Uid";
 	public static final String KEY_USER = "user";
 	public static final String KEY_PASS = "pass";
 	public static final String KEY_PHONENUMBER = "phoneNumber";
     public static final String KEY_EAMIL = "Email";
-	public static final String KEY_PAGE = "page";
-	public static final String KEY_PERPAGE = "perpage";
+	
+	public static final String KEY_HERD_IMAGE = "herdImage";
+	/*
+	 * 消息
+	 */
 	public static final String KEY_MSG_ID = "msgId";
-	public static final String KEY_MSG = "msg";
-	public static final String KEY_DATE = "date";
+	public static final String KEY_MSG_CONTEXT = "msgContext";
+	public static final String KEY_MSG_TITLE = "msgTitle";
+	public static final String KEY_MSG_NUM_STARS = "msgNumStars";
+	public static final String KEY_MSG_NUM_COMMENT = "msgNumComment";
+	public static final String KEY_MSG_TIME = "msgTime";
+	public static final String KEY_MSG_IMAGE = "msgImage";
+	
+	/*
+	 * 评论
+	 */
 	public static final String KEY_CONTENT = "content";
 	
-
+	
+	
+	//public static final String KEY_CONTENT = "content";
+	public static final String KEY_PAGE = "page";
+	public static final String KEY_PERPAGE = "perpage";
+	
+	/*
+	 * 公共
+	 */
+	public static final String KEY_DATE = "date";
+	
 	public static final String KEY_STATUS = "status";
 
+	/*
+	 * 上传标签
+	 */
 	public static final String ACTION_LOGIN = "login";
 	public static final String ACTION_TIMELINE = "timeline";
 	public static final String ACTION_REGISTERED = "registered";
@@ -43,6 +71,7 @@ public class Uits {
 
 	public static final int SUCCESS= 1;
 	public static final int FAIL = 0;
+	public static final int FAIL_TWO = 3;
 	public static final int ERROR = 2;
 	
 	public static final String QUERY = "query";
@@ -79,7 +108,7 @@ public class Uits {
 	 */
 	public static int loginCheak(String user, String pass){
 		
-		String sql = "SELECT Uuser,Upass FROM uuserdata";
+		String sql = "SELECT Uuser_name,Uuser_pass FROM UserPass";
 
 		ResultSet resultSet;
 		try {
@@ -89,8 +118,8 @@ public class Uits {
 			while(resultSet.next()){
 
 				if(pass != null && user != null){
-					if(user.equals(resultSet.getString("Uuser"))){
-						if(pass.equals(resultSet.getString("Upass"))){
+					if(user.equals(resultSet.getString("Uuser_name"))){
+						if(pass.equals(resultSet.getString("Uuser_pass"))){
 							return SUCCESS;
 						}else {
 							return FAIL;
@@ -112,7 +141,7 @@ public class Uits {
 	 * @return
 	 */
 	public static String TimeLineMsgMySql(){
-		String sql = "SELECT * FROM message ORDER BY Mdate DESC";
+		String sql = "SELECT userpass.Uid,Mid,DherdImage,Uuser_name,Mtitle,Mcontext,Mtime,Mimage,Mnum_stars,Mnum_comment FROM Message,DataUser,userpass WHERE userpass.Uid=message.Uid=datauser.Duser_id ORDER BY Mtime DESC";
 		try {
 			
 			ResultSet resultSet = mySqlLink(sql, QUERY);
@@ -120,10 +149,16 @@ public class Uits {
 			JSONObject json = new JSONObject();
 			String strJson = "";
 			while(resultSet.next()){
-				json.put(KEY_USER, resultSet.getString("Muser"));
-				json.put(KEY_MSG, resultSet.getString("Mmsg"));
-				json.put(KEY_DATE, resultSet.getString("Mdate"));
-				json.put(KEY_MSG_ID, resultSet.getString("Mid"));	
+				json.put(KEY_USER_ID, resultSet.getString("Uid"));
+				json.put(KEY_MSG_ID, resultSet.getString("Mid"));
+				json.put(KEY_HERD_IMAGE, resultSet.getString("DherdImage"));
+				json.put(KEY_USER, resultSet.getString("Uuser_name"));
+				json.put(KEY_MSG_TITLE, resultSet.getString("Mtitle"));
+				json.put(KEY_MSG_CONTEXT, resultSet.getString("Mcontext"));
+				json.put(KEY_MSG_NUM_STARS, resultSet.getString("Mnum_stars"));	
+				json.put(KEY_MSG_NUM_COMMENT, resultSet.getString("Mnum_comment"));	
+				json.put(KEY_MSG_TIME, resultSet.getString("Mtime"));
+				json.put(KEY_MSG_IMAGE, resultSet.getString("Mimage"));
 				strJson +=json.toString() + ",";
 			}
 			strJson = strJson.substring(0, strJson.length()-1);
@@ -147,7 +182,8 @@ public class Uits {
 	 */
 	public static int RegisteredMySql(String user, String pass, String phoneNumber, String Email){
 
-		String sql = "SELECT Uuser,UphoneNumber FROM uuserdata";
+		String sql = "SELECT Uuser_name,Uuser_pass,Uphone FROM UserPass";
+		
 		try {
 		
 			ResultSet resultSet = mySqlLink(sql, QUERY);
@@ -155,21 +191,26 @@ public class Uits {
 			while(resultSet.next()){
 	
 				if(pass != null && user != null && phoneNumber != null){
-					if(user.equals(resultSet.getString("Uuser"))){
+					if(user.equals(resultSet.getString("Uuser_name"))){
 						return FAIL;
-					}else if(phoneNumber.equals(resultSet.getString("UphoneNumber"))){
-						return FAIL;
+					}
+					if(phoneNumber.equals(resultSet.getString("Uphone"))){
+						return FAIL_TWO;
 					}
 				}		
 			}
 					
 			String date = getDate();
-				
-			String sql2 = "'"+user+"','"+pass+"','"+phoneNumber+"','"+Email+"','"+date+"','"+0+"','"+0+"','"+0+"'";
-			String sql3 = "INSERT INTO `uuserdata`(`Uuser`, `Upass`, `UphoneNumber`, `Uemal`, `UregisterTime`,`UmsgNum`,`UCommentNum`,`UmsgId`) VALUES ("+ sql2 +")";
-			System.out.println("+++.."+sql3);
-			mySqlLink(sql3, UPDATA);  
-			
+			//创建用户账户	
+			String sql2 = "INSERT INTO `UserPass`(`Uuser_name`, `Uuser_pass`, `Uphone`, `Uemal`, `UregisterTime`) VALUES ('"+user+"','"+pass+"',"+phoneNumber+",'"+Email+"','"+date+"')";
+			mySqlLink(sql2, UPDATA);  
+			//获取用户ID
+			String sql3 = "SELECT Uid FROM userpass WHERE Uuser_name in ('"+user+"')";
+			resultSet = mySqlLink(sql3, QUERY);
+			//填充用户资料
+			resultSet.next();
+			String sql4 = "INSERT INTO datauser(Duser_id,Duser_name) VALUES ("+ resultSet.getInt("Uid") +",'"+ user +"')" ;
+			mySqlLink(sql4, UPDATA); 
 			return SUCCESS;		
 		
 		} catch (SQLException e) {
@@ -199,7 +240,7 @@ public class Uits {
 			while(resultSet.next()){
 				
 				if(resultSet.getString("Ccontent") != null){
-					json.put(KEY_CONTENT, resultSet.getString("Ccontent"));
+					json.put(KEY_MSG_CONTEXT, resultSet.getString("Ccontent"));
 					json.put(KEY_USER, resultSet.getString("Cuser"));
 					json.put(KEY_DATE, resultSet.getString("Cdate"));	
 					strJson +=json.toString() + ",";
@@ -249,36 +290,31 @@ public class Uits {
 	 * @param msg
 	 * @return
 	 */
-	public static int PubMsgMySql(String user, String msg){
+	public static int PubMsgMySql(String user, String msgTitle, String msgContext){
 		
 	//	List<Msg> data = new ArrayList<>();
 
-		String sql1 = "SELECT UmsgNum,Uid,UmsgId FROM `uuserdata` WHERE Uuser IN ('"+user+ "');";
+		String sql1 = "SELECT Dnum_message,Duser_id FROM datauser where Duser_name in ('"+user+"');";
 		
 		try {
 			ResultSet resultSet = mySqlLink(sql1, QUERY);
-			int msgNum = 0;
-			int userId = 0;
-			int UmsgId = 0;
+			int num_message = 0;
+			int user_id = 0;
 			while(resultSet.next()){
-				msgNum = Integer.parseInt(resultSet.getString("UmsgNum"));
-				userId = Integer.parseInt(resultSet.getString("Uid"));
-				UmsgId = Integer.parseInt(resultSet.getString("UmsgId"));
-	
+				num_message = Integer.parseInt(resultSet.getString("Dnum_message"));
+				user_id = Integer.parseInt(resultSet.getString("Duser_id"));	
 			}
-			int MsgId = userId *10000 + UmsgId + 1;
 			
-			System.out.println("消息ID:"+MsgId+"\n用户ID:"+userId+"\n用户消息数:"+msgNum);
+			System.out.println("用户ID:"+user_id+"\n用户消息数:"+num_message);
 			
 			String date = getDate();
-			String sql3 = "'"+MsgId+"','"+user+"','"+msg+"','"+date+"'";
-			String sql4 = "INSERT INTO message(`Mid`,`Muser`,`Mmsg`,`Mdate`) VALUES ("+sql3+")";
-			mySqlLink(sql4, UPDATA);
+			String imagePath = null;
+			String sql2 = "INSERT INTO message(Uid,Mtitle,Mcontext,Mtime,Mimage) VALUES('"+user_id+"','"+msgTitle+"','"+msgContext+"','"+date+"','"+imagePath+"')";
+			mySqlLink(sql2, UPDATA);
 			
-			msgNum++;
-			UmsgId++;
-			String sql5 = "UPDATE uuserdata SET `UmsgNum`= '"+msgNum+"',`UmsgId`= '"+UmsgId+"'WHERE Uuser IN ('"+user+"')";
-			mySqlLink(sql5, UPDATA);  
+			num_message++;
+			String sql3 = "UPDATE datauser SET Dnum_message='"+num_message+"' WHERE Duser_id='"+user_id+"'";
+			mySqlLink(sql3, UPDATA);  
 
 			return SUCCESS;
 			

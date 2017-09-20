@@ -95,7 +95,7 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Message msg = adapter.getItem(i);
         Intent k = new Intent(getActivity(), AtyMessageContent.class);
-        k.putExtra(Config.KEY_MSG, msg.getMsg());
+        k.putExtra(Config.KEY_MSG_CONTEXT, msg.getMsg_context());
         k.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
         k.putExtra(Config.KEY_USER,user);
         k.putExtra(Config.KEY_TOKEN, token);

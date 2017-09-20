@@ -71,7 +71,7 @@ public class AtyTimelineMessageListAdapter extends BaseAdapter {
         Message msg = getItem(i);
     //头像
         cell.tvUserName.setText(msg.getUser());
-        cell.tvCellLabel.setText(msg.getMsg());
+        cell.tvCellLabel.setText(msg.getMsg_context());
         cell.tvNumFaulous.setText(msg.getMsg_fabulous());
         cell.tvNumComment.setText(msg.getMsg_comment());
 

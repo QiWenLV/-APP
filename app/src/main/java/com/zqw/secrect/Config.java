@@ -12,27 +12,61 @@ public class Config {
     public static final String CHARSET = "utf-8";
 
     public static final String APP_ID = "com.zqw.secret";
-    public static final String SERVER_URL = "http://123.207.11.223:8080/Secrect/secrect";
-   // public static final String SERVER_URL = "http://10.0.2.2:8080/talkroom";
+   // public static final String SERVER_URL = "http://123.207.11.223:8080/Secrect/secrect";
+    public static final String SERVER_URL = "http://10.0.2.2:8080/Secrect/secrect";
 
     public static final String KEY_TOKEN = "token";
     public static final String KEY_ACTION = "action";
     public static final String KEY_TIMELINE = "timeline";
     public static final String KEY_COMMENTS = "comments";
 
+    /*
+    * 用户
+    */
+    public static final String KEY_USER_ID = "Uid";
     public static final String KEY_USER = "user";
     public static final String KEY_PASS = "pass";
     public static final String KEY_PHONENUMBER = "phoneNumber";
     public static final String KEY_EAMIL = "Email";
+    public static final String KEY_HERD_IMAGE = "herdImage";
+
+    /*
+	 * 消息
+	 */
+
+    public static final String KEY_MSG_ID = "msgId";
+    public static final String KEY_MSG_CONTEXT = "msgContext";
+    public static final String KEY_MSG_TITLE = "msgTitle";
+    public static final String KEY_MSG_NUM_STARS = "msgNumStars";
+    public static final String KEY_MSG_NUM_COMMENT = "msgNumComment";
+    public static final String KEY_MSG_TIME = "msgTime";
+    public static final String KEY_MSG_IMAGE = "msgImage";
+
+    /*
+     * 评论
+     */
+    public static final String KEY_CONTENT = "content";
+
+
     public static final String KEY_PAGE = "page";
     public static final String KEY_PERPAGE = "perpage";
-    public static final String KEY_MSG_ID = "msgId";
-    public static final String KEY_MSG = "msg";
+
+
+
+
+
+    /*
+
+     */
+
     public static final String KEY_DATE = "date";
-    public static final String KEY_CONTENT = "content";
 
     public static final String KEY_STATUS = "status";
 
+
+    /*
+	 * 上传标签
+	 */
     public static final String ACTION_LOGIN = "login";
     public static final String ACTION_TIMELINE = "timeline";
     public static final String ACTION_REGISTERED = "registered";

@@ -75,10 +75,16 @@ public class AtyRegistered extends Activity{
                 }, new Registered.FailCallback() {
                     @Override
                     public void onFail(int t) {
+                        //0:用户名已存在
+                        //1:成功
+                        //2:连接错误
+                        //3:手机号已存在
                         if(t == 0){
-                            Toast.makeText(AtyRegistered.this, "手机号被注册了！", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(AtyRegistered.this, "用户名已经存在", Toast.LENGTH_LONG).show();
+                            Toast.makeText(AtyRegistered.this, "用户名已经存在！", Toast.LENGTH_LONG).show();
+                        } else if(t == 3){
+                            Toast.makeText(AtyRegistered.this, "手机号被注册了", Toast.LENGTH_LONG).show();
+                        } else{
+                            Toast.makeText(AtyRegistered.this, "网络连接错误", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

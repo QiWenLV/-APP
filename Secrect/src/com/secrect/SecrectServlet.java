@@ -44,6 +44,7 @@ public class SecrectServlet extends HttpServlet{
 		System.out.println("wwww"+action);
 		
 		switch (action) {
+		//登陆
 		case Uits.ACTION_LOGIN:
 			
 			int p = Uits.loginCheak(user, pass);
@@ -55,14 +56,14 @@ public class SecrectServlet extends HttpServlet{
 				out.print("{\"status\":2}");
 			}
 			break;
-
+		//加载消息列表
 		case Uits.ACTION_TIMELINE:
 			
 			String json = Uits.TimeLineMsgMySql();
-			
+			System.out.println("@%@#"+json);
 			out.print("{\"status\":1,\"page\":1,\"perpage\":20,\"timeline\":["+json+"]}");
 			break;
-			
+		//注册
 		case Uits.ACTION_REGISTERED:
 	
 			
@@ -74,11 +75,13 @@ public class SecrectServlet extends HttpServlet{
 				
 			}else if(k == Uits.FAIL){
 				out.print("{\"status\":0}");
+			}else if(k == Uits.FAIL_TWO){
+				out.print("{\"status\":3}");
 			}else{
 				out.print("{\"status\":2}");
 			}
 			break;	
-			
+		//加载评论
 		case Uits.ACTION_GET_COMMENT: 
 			
 			String Mid = request.getParameter(Uits.KEY_MSG_ID);
@@ -90,7 +93,7 @@ public class SecrectServlet extends HttpServlet{
 			}
 		
 			break;
-			
+		//发布评论
 		case Uits.ACTION_PUB_COMMENT:
 			String content = request.getParameter(Uits.KEY_CONTENT);
 			String msgId = request.getParameter(Uits.KEY_MSG_ID);
@@ -103,10 +106,12 @@ public class SecrectServlet extends HttpServlet{
 			}
 			
 			break;
+		//发布消息
 		case Uits.ACTION_PUBLISH:
 			
-			String msg = request.getParameter(Uits.KEY_MSG);
-			int pubMsg = Uits.PubMsgMySql(user,msg);
+			String msg = request.getParameter(Uits.KEY_MSG_CONTEXT);
+			String a = "zhes biaot";
+			int pubMsg = Uits.PubMsgMySql(user,a,msg);
 			if(pubMsg == Uits.SUCCESS){
 				out.print("{\"status\":1}");
 			}else{

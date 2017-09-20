@@ -48,7 +48,7 @@ public class AtyMessageContent extends BaseActivity implements View.OnClickListe
 
         Intent data = getIntent();
         user = data.getStringExtra(Config.KEY_USER);
-        msg = data.getStringExtra(Config.KEY_MSG);
+        msg = data.getStringExtra(Config.KEY_MSG_CONTEXT);
         msgId = data.getStringExtra(Config.KEY_MSG_ID);
         token = data.getStringExtra(Config.KEY_TOKEN);
 
