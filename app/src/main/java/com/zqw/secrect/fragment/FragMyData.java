@@ -1,8 +1,11 @@
 package com.zqw.secrect.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,13 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
+import com.zqw.secrect.net.HttpMethod;
+import com.zqw.secrect.net.NetConnection;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,16 +51,17 @@ public class FragMyData extends Fragment implements View.OnClickListener {
     private LinearLayout layoutComment;
     private LinearLayout layoutCollection;
 
+    public FragMyData(String user, String token){
+        this.user = user;
+        this.token = token;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragments_mydata, container, false);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            user = bundle.getString(Config.KEY_USER);
-            token = bundle.getString(Config.KEY_TOKEN);
-        }
+        Log.i("TEXTC", "**&&**&&**&"+user);
         initView(rootView);
 
         return rootView;
@@ -125,14 +135,177 @@ public class FragMyData extends Fragment implements View.OnClickListener {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择
                     selectList = PictureSelector.obtainMultipleResult(data);
-                   // adapter.setList(selectList);
-                   // adapter.notifyDataSetChanged();
-                   // DebugUtil.i(TAG, "onActivityResult:" + selectList.size());
-                    for(LocalMedia a : selectList){
-                        Log.i("TEXTC", a.getCutPath());
+                    // adapter.setList(selectList);
+                    // adapter.notifyDataSetChanged();
+                    // DebugUtil.i(TAG, "onActivityResult:" + selectList.size());
+                    for (LocalMedia a : selectList) {
+                        Bitmap imageBitmap = BitmapFactory.decodeFile(a.getCutPath());
+
+                        String headImage = convertIconToString(imageBitmap);
+                       // Log.i("TEXTC", "这是原版"+headImage);
+
+                        new UqloadImage(user, token, headImage, new UqloadImage.SuccessCallback() {
+                            @Override
+                            public void onSuccess(String s) {
+                                Bitmap image = convertStringToIcon(s);
+                                hear_image.setImageBitmap(image);
+                            }
+                        }, new UqloadImage.FailCallback() {
+                            @Override
+                            public void onFail() {
+                                Toast.makeText(getActivity(), "头像上传失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    //    Log.i("TEXTC", a.getCutPath());
                     }
                     break;
             }
         }
     }
+
+
+    public static class UqloadImage{
+
+        public UqloadImage(String user, String token, String headImage, final SuccessCallback successCallback, final FailCallback failCallback){
+            new NetConnection(Config.SERVER_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    try {
+                        JSONObject obj = new JSONObject(result);
+                        switch (obj.getInt(Config.KEY_STATUS)) {
+                            case 1:
+                                if (successCallback != null) {
+                                    String s = obj.getString(Config.KEY_HERD_IMAGE);
+                                    successCallback.onSuccess(s);
+                                }
+                                break;
+                            default:
+                                if (failCallback != null) {
+                                    failCallback.onFail();
+                                }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new NetConnection.FailCallback() {
+                @Override
+                public void onFail() {
+                    if(failCallback != null){
+                        failCallback.onFail();
+                    }
+                }
+            }, Config.KEY_ACTION, Config.ACTION_UPLOAD_HEAD,
+                    Config.KEY_USER, user,
+                    Config.KEY_TOKEN, token,
+                    Config.KEY_HERD_IMAGE, headImage);
+
+        }
+
+
+        public interface SuccessCallback{
+            void onSuccess(String s);
+        }
+
+        public static interface FailCallback{
+            void onFail();
+        }
+    }
+
+
+
+//    public class UqloadImage extends AsyncTask<Bitmap, Void, Bitmap> {
+//
+//
+//        @Override
+//        protected Bitmap doInBackground(Bitmap... bitmaps) {
+//            StringBuilder paramsStr = new StringBuilder();
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//
+//            bitmaps[0].compress(Bitmap.CompressFormat.PNG, 100, baos);
+//            InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+//
+//
+//            URLConnection uc;
+//            try {
+//                //上传头像
+//                uc = new URL(Config.SERVER_URL).openConnection();
+//                uc.setDoOutput(true);
+//
+//                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(uc.getOutputStream(), Config.CHARSET));
+//                bw.write(isBm.toString());
+//                bw.flush();
+//
+//
+//                //服务器返回图片数据
+//                BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream(), Config.CHARSET));
+//                String line = null;
+//                StringBuffer result = new StringBuffer();
+//
+//                while((line = br.readLine()) != null){
+//                    result.append(line);
+//                }
+//
+//                JSONObject obj = new JSONObject(result.toString());
+//
+//                switch (obj.getInt(Config.KEY_STATUS)){
+//                    case 1:
+//
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//            return null;
+//        }
+//    }
+
+
+    /**
+     * 图片转成string
+     *
+     * @param bitmap
+     * @return
+     */
+    public static String convertIconToString(Bitmap bitmap)
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] appicon = baos.toByteArray();// 转为byte数组
+        return Base64.encodeToString(appicon, Base64.DEFAULT);
+
+    }
+
+
+    /**
+     * 将字符串转化为bitmap
+     * @param st
+     * @return
+     */
+    public static Bitmap convertStringToIcon(String st)
+    {
+        // OutputStream out;
+        Bitmap bitmap = null;
+        try
+        {
+            // out = new FileOutputStream("/sdcard/aa.jpg");
+            byte[] bitmapArray;
+            bitmapArray = Base64.decode(st, Base64.DEFAULT);
+            bitmap =
+                    BitmapFactory.decodeByteArray(bitmapArray, 0,
+                            bitmapArray.length);
+            // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            return bitmap;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+
 }

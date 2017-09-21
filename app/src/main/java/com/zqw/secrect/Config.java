@@ -51,10 +51,6 @@ public class Config {
     public static final String KEY_PAGE = "page";
     public static final String KEY_PERPAGE = "perpage";
 
-
-
-
-
     /*
 
      */
@@ -67,12 +63,14 @@ public class Config {
     /*
 	 * 上传标签
 	 */
-    public static final String ACTION_LOGIN = "login";
-    public static final String ACTION_TIMELINE = "timeline";
-    public static final String ACTION_REGISTERED = "registered";
-    public static final String ACTION_GET_COMMENT = "get_comment";
-    public static final String ACTION_PUB_COMMENT = "pub_comment";
-    public static final String ACTION_PUBLISH = "publish";
+    public static final String ACTION_LOGIN = "login";               //登陆
+    public static final String ACTION_TIMELINE = "timeline";         //消息列表
+    public static final String ACTION_REGISTERED = "registered";     //注册
+    public static final String ACTION_GET_COMMENT = "get_comment";   //评论列表
+    public static final String ACTION_PUB_COMMENT = "pub_comment";   //发表评论
+    public static final String ACTION_PUBLISH = "publish";           //发表消息
+    public static final String ACTION_MYDATA = "mydata";             //我的信息
+    public static final String ACTION_UPLOAD_HEAD = "upload_head";   //上传头像
 
     public static final int ACITVITY_RESULT_NEED_REFRESH = 10000;
 
@@ -113,4 +111,6 @@ public class Config {
         e.putString(KEY_USER, user);
         e.commit();
     }
+
+
 }

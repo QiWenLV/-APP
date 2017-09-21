@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
 
 /**
@@ -18,16 +17,19 @@ public class FragFriend extends Fragment {
     private String user;
     private String token;
 
+
+    public FragFriend(String user, String token){
+        this.user = user;
+        this.token = token;
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragments_friends, container, false);
 
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            user = bundle.getString(Config.KEY_USER);
-            token = bundle.getString(Config.KEY_TOKEN);
-        }
+
 
 
         return rootView;

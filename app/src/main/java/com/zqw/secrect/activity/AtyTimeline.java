@@ -96,8 +96,8 @@ public class AtyTimeline extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.id_viewwpager);
         fragments = new ArrayList<Fragment>();
         fragments.add(new FragInfo(user, token));
-        fragments.add(new FragFriend());
-        fragments.add(new FragMyData());
+        fragments.add(new FragFriend(user, token));
+        fragments.add(new FragMyData(user, token));
         viewPager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments));
         viewPager.setCurrentItem(0);
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());

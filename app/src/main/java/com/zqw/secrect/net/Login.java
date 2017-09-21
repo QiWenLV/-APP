@@ -1,7 +1,5 @@
 package com.zqw.secrect.net;
 
-import android.util.Log;
-
 import com.zqw.secrect.Config;
 
 import org.json.JSONException;
@@ -21,9 +19,9 @@ public class Login {
                     if (result != null && result.startsWith("\ufeff")) {
                         result = result.substring(1);
                     }
-                    Log.i("TEST",">..."+result);
+
                     JSONObject obj = new JSONObject(result);
-                    Log.i("TEST",">"+"{{{{"+obj.getInt(Config.KEY_STATUS));
+
                     switch (obj.getInt(Config.KEY_STATUS)){
                         case 1:
                             if(successCallback != null){

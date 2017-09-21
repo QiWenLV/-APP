@@ -1,20 +1,35 @@
 package com.secrect;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 import net.sf.json.JSONObject;
 
 import com.mysql.jdbc.Statement;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Uits {
 	public static final String SQLPATH = "jdbc:mysql://localhost:3306/secrect";
 	public static final String SQLUSER = "root";
 	public static final String SQLPASS = "root";
+	
+	public static final String HEADIMAGE_PATH = "C:/Users/启文/Desktop/QQ头像/";
 	
 	public static final String KEY_TOKEN = "token";
 	public static final String KEY_ACTION = "action";
@@ -62,12 +77,14 @@ public class Uits {
 	/*
 	 * 上传标签
 	 */
-	public static final String ACTION_LOGIN = "login";
-	public static final String ACTION_TIMELINE = "timeline";
-	public static final String ACTION_REGISTERED = "registered";
-	public static final String ACTION_GET_COMMENT = "get_comment";
-	public static final String ACTION_PUB_COMMENT = "pub_comment";
-	public static final String ACTION_PUBLISH = "publish";
+	public static final String ACTION_LOGIN = "login";               //登陆
+    public static final String ACTION_TIMELINE = "timeline";         //消息列表
+    public static final String ACTION_REGISTERED = "registered";     //注册
+    public static final String ACTION_GET_COMMENT = "get_comment";   //评论列表
+    public static final String ACTION_PUB_COMMENT = "pub_comment";   //发表评论
+    public static final String ACTION_PUBLISH = "publish";           //发表消息
+    public static final String ACTION_MYDATA = "mydata";             //我的信息
+    public static final String ACTION_UPLOAD_HEAD = "upload_head";   //上传头像
 
 	public static final int SUCCESS= 1;
 	public static final int FAIL = 0;
@@ -305,8 +322,6 @@ public class Uits {
 				user_id = Integer.parseInt(resultSet.getString("Duser_id"));	
 			}
 			
-			System.out.println("用户ID:"+user_id+"\n用户消息数:"+num_message);
-			
 			String date = getDate();
 			String imagePath = null;
 			String sql2 = "INSERT INTO message(Uid,Mtitle,Mcontext,Mtime,Mimage) VALUES('"+user_id+"','"+msgTitle+"','"+msgContext+"','"+date+"','"+imagePath+"')";
@@ -328,7 +343,110 @@ public class Uits {
 		return ERROR;
 	}
 	
+	/**
+	 * 上传头像
+	 * @param user
+	 * @param img
+	 * @return
+	 */
+	public static int UqloadIamgeMySql(String user, String img){
+		
+		String FileName = generateFileName();
+		String Path = HEADIMAGE_PATH + FileName+".png";
+		
+//		String Path1 = HEADIMAGE_PATH + FileName+"1.txt";
+//		String Path2 = HEADIMAGE_PATH + FileName+"2.txt";
 	
+//		System.out.println("这是原版"+img);
+
+//		byte[] b = img.getBytes();
+//		OutputStream out;
+//		try {
+//			out = new FileOutputStream(Path1);
+//			out.write(b);
+//			out.flush();
+//			out.close();
+//		} catch (IOException e1) {
+//			// TODO 自动生成的 catch 块
+//			e1.printStackTrace();
+//		}
+//		
+		
+		img = img.replace(" ", "+");
+		
+//		byte[] c = img.getBytes();
+//
+//		try {
+//			out = new FileOutputStream(Path2);
+//			out.write(c);
+//			out.flush();
+//			out.close();
+//		} catch (IOException e1) {
+//			// TODO 自动生成的 catch 块
+//			e1.printStackTrace();
+//		}
+		
+		GenerateImage(img, Path);
+	
+		String sql1 = "UPDATE datauser SET DherdImage='"+Path+"' WHERE Duser_name='"+user+"'";
+		try {
+			mySqlLink(sql1, UPDATA);
+			System.out.println("**********"+sql1);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return FAIL;
+		}
+		
+		return SUCCESS;
+	}
+	
+	
+	public static boolean GenerateImage(String imgStr, String path) { //对字节数组字符串进行Base64解码并生成图片
+		if (imgStr == null) // 图像数据为空
+			return false;
+		BASE64Decoder decoder = new BASE64Decoder();
+		try {
+			// Base64解码
+
+			byte[] b = decoder.decodeBuffer(imgStr);
+			for (int i = 0; i < b.length; ++i) {
+				if (b[i] < 0) {// 调整异常数据
+					b[i] += 256;
+				}
+			}
+		// 生成jpeg图片
+			OutputStream out = new FileOutputStream(path);
+			out.write(b);
+			out.flush();
+			out.close();
+			return true;
+		} catch (Exception e) {
+			System.out.print("****&&&&&&");
+			return false;
+		}
+	}
+		
+	
+	/**
+	 * 获得一个随机文件名
+	 * @return
+	 */
+	private static String generateFileName() {
+		// 获得当前时间
+		DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+		// 转换为字符串
+		String formatDate = format.format(new Date());
+		// 随机生成文件编号
+		int random = new Random().nextInt(10);
+		return new StringBuffer().append(formatDate).append(
+		random).toString();
+		}  
+	
+	
+	/**
+	 * 获取当然时间和日期
+	 * @return
+	 */
 	public static String getDate(){
 		Date currentTime = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

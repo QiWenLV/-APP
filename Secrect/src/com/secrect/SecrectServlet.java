@@ -119,6 +119,16 @@ public class SecrectServlet extends HttpServlet{
 			}
 			
 			break;
+		//ÉÏ´«Í·Ïñ
+		case Uits.ACTION_UPLOAD_HEAD:
+			String img = request.getParameter(Uits.KEY_HERD_IMAGE);
+			
+			if(Uits.UqloadIamgeMySql(user, img) == Uits.SUCCESS){
+				out.print("{\"status\":1,\""+Uits.KEY_HERD_IMAGE+"\":\""+img+"\"}");
+			}
+			
+			break;
+			
 		default:
 				out.print("{\"status\":qingzhuchu action}");
 		}
