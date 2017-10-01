@@ -2,6 +2,11 @@ package com.zqw.secrect;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by 启文 on 2017/7/20.
@@ -30,11 +35,19 @@ public class Config {
     public static final String KEY_EAMIL = "Email";
     public static final String KEY_HERD_IMAGE = "herdImage";
 
+    public static final String KEY_NUM_MESSAGE = "num_message";
+    public static final String KEY_NUM_COMMENT = "num_comment";
+    public static final String KEY_NUM_COLLECTION = "num_collection";
+
+
+
+
     /*
 	 * 消息
 	 */
 
     public static final String KEY_MSG_ID = "msgId";
+    public static final String KEY_MSG_USER = "msgUser";
     public static final String KEY_MSG_CONTEXT = "msgContext";
     public static final String KEY_MSG_TITLE = "msgTitle";
     public static final String KEY_MSG_NUM_STARS = "msgNumStars";
@@ -45,7 +58,27 @@ public class Config {
     /*
      * 评论
      */
-    public static final String KEY_CONTENT = "content";
+    public static final String KEY_CONTENT = "comment_context";
+    public static final String KEY_COMMENT_ID = "comment_id";
+    public static final String KEY_COMMENT_TYPE = "comment_type";
+    public static final String KEY_COMMENT_TOUID = "comment_to_uid";
+    public static final String KEY_COMMENT_TIME = "comment_time";
+
+
+    /*
+	 * 评论的类型
+	 */
+    public static final String COMMENT_TYPE_COMMENT = "comment";    //评论
+    public static final String COMMENT_TYPE_REPLY = "reply";        //回复
+
+    /*
+     * 点赞
+     */
+    public static final String KEY_FA_CLICK = "faclick";    //点赞
+    public static final String KEY_FA_YES = "fayes";    //赞+1
+    public static final String KEY_FA_NO = "fano";      //赞-1
+    public static final String KEY_FA_NEW = "fanew";    //更新的赞数量
+
 
 
     public static final String KEY_PAGE = "page";
@@ -71,6 +104,7 @@ public class Config {
     public static final String ACTION_PUBLISH = "publish";           //发表消息
     public static final String ACTION_MYDATA = "mydata";             //我的信息
     public static final String ACTION_UPLOAD_HEAD = "upload_head";   //上传头像
+    public static final String ACTION_CLICKFABULOUS = "click_fabulous";   //点赞
 
     public static final int ACITVITY_RESULT_NEED_REFRESH = 10000;
 
@@ -110,6 +144,41 @@ public class Config {
         SharedPreferences.Editor e = context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).edit();
         e.putString(KEY_USER, user);
         e.commit();
+    }
+
+    /**
+     * 图片转成string
+     *
+     * @param bitmap
+     * @return
+     */
+    public static String convertIconToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] appicon = baos.toByteArray();// 转为byte数组
+        return Base64.encodeToString(appicon, Base64.DEFAULT);
+
+    }
+
+
+    /**
+     * 将字符串转化为bitmap
+     * @param st
+     * @return
+     */
+    public static Bitmap convertStringToIcon(String st) {
+        // OutputStream out;
+        Bitmap bitmap = null;
+        try {
+            // out = new FileOutputStream("/sdcard/aa.jpg");
+            byte[] bitmapArray;
+            bitmapArray = Base64.decode(st, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+            // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            return bitmap;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 

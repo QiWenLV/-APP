@@ -32,7 +32,7 @@ public class Timeline {
                                     msgObj = msgsJsonArray.getJSONObject(i);
                                     msgs.add(new Message(msgObj.getString(Config.KEY_USER_ID),
                                             msgObj.getString(Config.KEY_MSG_ID),
-                                            msgObj.getString(Config.KEY_HERD_IMAGE),
+                                            Config.convertStringToIcon(msgObj.getString(Config.KEY_HERD_IMAGE)),
                                             msgObj.getString(Config.KEY_USER),
                                             msgObj.getString(Config.KEY_MSG_TITLE),
                                             msgObj.getString(Config.KEY_MSG_CONTEXT),
@@ -40,6 +40,7 @@ public class Timeline {
                                             msgObj.getString(Config.KEY_MSG_NUM_COMMENT),
                                             msgObj.getString(Config.KEY_MSG_TIME),
                                             msgObj.getString(Config.KEY_MSG_IMAGE)));
+
                                 }
                                 successCallback.onSuccess(obj.getInt(Config.KEY_PAGE), obj.getInt(Config.KEY_PERPAGE), msgs);
 

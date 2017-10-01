@@ -54,6 +54,7 @@ public class AtyTimelineMessageListAdapter extends BaseAdapter {
             cell = new ListCell();
             cell.imgHead = (ImageView) view.findViewById(R.id.img_head);
             cell.tvUserName = (TextView) view.findViewById(R.id.tv_user_name);
+            cell.tvCellLabelTitle = (TextView) view.findViewById(R.id.tvCellLabel_title);
             cell.tvCellLabel = (TextView) view.findViewById(R.id.tvCellLabel);
             cell.imgShare = (ImageButton) view.findViewById(R.id.img_share);
             cell.imgCollection = (ImageButton) view.findViewById(R.id.img_collection);
@@ -71,9 +72,11 @@ public class AtyTimelineMessageListAdapter extends BaseAdapter {
         Message msg = getItem(i);
     //头像
         cell.tvUserName.setText(msg.getUser());
+        cell.tvCellLabelTitle.setText(msg.getMsg_title());
         cell.tvCellLabel.setText(msg.getMsg_context());
         cell.tvNumFaulous.setText(msg.getMsg_fabulous());
         cell.tvNumComment.setText(msg.getMsg_comment());
+        cell.imgHead.setImageBitmap(msg.getHeadImage());
 
 
         cell.tvUserName.setOnClickListener(new ItemViewOnClick(i));
@@ -122,6 +125,7 @@ public class AtyTimelineMessageListAdapter extends BaseAdapter {
     private  class ListCell{
         ImageView imgHead;          //头像
         TextView tvUserName;        //用户名
+        TextView tvCellLabelTitle;  //消息标题
         TextView tvCellLabel;       //消息内容
         ImageButton imgShare;       //分享按钮
         ImageButton imgCollection;  //收藏按钮

@@ -1,5 +1,6 @@
 package com.zqw.secrect.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.zqw.secrect.R;
 import com.zqw.secrect.activity.AtyMessageContent;
 import com.zqw.secrect.adapter.AtyTimelineMessageListAdapter;
 import com.zqw.secrect.adapter.IUninstall;
+import com.zqw.secrect.net.ClickFabulous;
 import com.zqw.secrect.net.Message;
 import com.zqw.secrect.net.Timeline;
 
@@ -34,6 +36,7 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
     private String token;
     private AtyTimelineMessageListAdapter adapter = null;
     private ListView list;
+
 
     //   CallBackValuel callBackValue;
 
@@ -73,11 +76,11 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
      */
     public void loadMessage(){
 
-        //final ProgressDialog pd = ProgressDialog.show(getActivity(), "..." , "正在加载...");
+        final ProgressDialog pd = ProgressDialog.show(getActivity(), "..." , "正在加载...");
         new Timeline(user, token, 1, 20, new Timeline.SuccessCallback() {
             @Override
             public void onSuccess(int pag, int perpag, List<Message> timeline) {
-               // pd.dismiss();
+                pd.dismiss();
                 //向适配器添加数据
                 adapter.clear();
                 adapter.addAll(timeline);
@@ -85,7 +88,7 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
         }, new Timeline.FailCallback() {
             @Override
             public void onFail() {
-               // pd.dismiss();
+                pd.dismiss();
                 Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
             }
         });
@@ -95,8 +98,9 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Message msg = adapter.getItem(i);
         Intent k = new Intent(getActivity(), AtyMessageContent.class);
-        k.putExtra(Config.KEY_MSG_CONTEXT, msg.getMsg_context());
-        k.putExtra(Config.KEY_MSG_ID, msg.getMsgID());
+        Bundle mBundle = new Bundle();
+        mBundle.putParcelable("msg", msg);
+        k.putExtras(mBundle);
         k.putExtra(Config.KEY_USER,user);
         k.putExtra(Config.KEY_TOKEN, token);
         startActivity(k);
@@ -110,8 +114,8 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
     }
 
     @Override
-    public void OnClickView(int i, View v) {
-        Message msg = adapter.getItem(i);
+    public void OnClickView(final int i, View v) {
+        final Message msg = adapter.getItem(i);
 
         switch (v.getId()){
             case R.id.tv_user_name:
@@ -127,8 +131,35 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
                 Toast.makeText(getActivity(), "点击了收藏"+i, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.img_fabulous:
-                Log.i("TEXT", "点击了赞"+i);
+                int firstVisiblePosition = list.getFirstVisiblePosition();
                 Toast.makeText(getActivity(), "点击了赞"+i, Toast.LENGTH_SHORT).show();
+                final View view =list.getChildAt(i-firstVisiblePosition);
+                //TextView tvNumFabulous = (TextView) view.findViewById(R.id.tv_item_num_fabilous);
+                //int newFabulous = Integer.parseInt(tvNumFabulous.getText().toString())+1;
+              //  tvNumFabulous.setText(newFabulous);
+                String isE = null;
+
+                if(msg.isFabulous()){
+                    isE = Config.KEY_FA_YES;
+                }else {
+                    isE = Config.KEY_FA_NO;
+                }
+                new ClickFabulous(user, token, msg.getMsgID(), isE, new ClickFabulous.SuccessCallback() {
+                    @Override
+                    public void onSuccess(String newFabulous) {
+                        msg.setMsg_fabulous(newFabulous);
+                        list.getAdapter().getView(i, view, list);
+                        msg.setFabulous(!msg.isFabulous());
+
+                    }
+                }, new ClickFabulous.FailCallback() {
+                    @Override
+                    public void onFail() {
+                        Toast.makeText(getActivity(), "点赞失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 break;
             case R.id.img_comment:
                 Log.i("TEXT", "点击了评论"+i);
@@ -137,6 +168,8 @@ public class FragInfo extends Fragment implements IUninstall, AdapterView.OnItem
 
         }
     }
+
+
 
 
 

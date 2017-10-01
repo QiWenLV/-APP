@@ -27,7 +27,6 @@
         android:id="@+id/view_one"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_gravity="center_vertical"
         android:background="@color/Separated"
         android:layout_below="@id/btnPubMsg_tb"/>
 
@@ -35,29 +34,37 @@
         android:id="@+id/etMessage_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="14dp"
         android:hint="标题(可省略)"
+        android:textSize="13sp"
         android:textColorHint="@color/Separated"
         android:singleLine="true"
         android:ellipsize="end"
         android:inputType="none"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@null"
         android:layout_below="@id/view_one"/>
 
     <View
         android:id="@+id/view_two"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_gravity="center_vertical"
         android:background="@color/Separated"
         android:layout_below="@id/etMessage_title"/>
     <EditText
         android:id="@+id/etMessage_content"
-        android:gravity="left"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="14dp"
         android:hint="分享你想说的"
+        android:textSize="13sp"
         android:textColorHint="@color/Separated"
         android:singleLine="false"
         android:inputType="none"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@null"
         android:layout_below="@id/view_two"/>
 
 

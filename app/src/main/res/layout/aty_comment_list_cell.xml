@@ -7,6 +7,52 @@
 
     tools:context="com.zqw.secrect.MainActivity">
 
+    <RelativeLayout
+        android:id="@+id/lin_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp">
+
+        <ImageView
+            android:id="@+id/img_head"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@mipmap/head_portrait"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="匿名用户"
+            android:textColor="#76a0d1"
+            android:textSize="14sp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/img_head"/>
+
+        <TextView
+            android:id="@+id/tv_user_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="武汉市 * 双鱼座"
+            android:textSize="8sp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/img_head"/>
+
+        <TextView
+            android:id="@+id/tv_msg_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:text="刚刚"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tvCellLabel"
         android:layout_width="fill_parent"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zqw.secrect.activity.AtyLogin;
+import com.zqw.secrect.activity.AtyTimeline;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,16 +23,16 @@ public class MainActivity extends AppCompatActivity {
 
         //Mycontacts.readContact(this);
 //
-//        if(token != null && user != null){
-//           //如果token不为空，直接跳过登录界面
-//            Intent i = new Intent(MainActivity.this, AtyTimeline.class);
-//            i.putExtra(Config.KEY_TOKEN, token);
-//            i.putExtra(Config.KEY_USER, user);
-//            startActivity(i);
-//        }else{
+        if(token != null && user != null){
+           //如果token不为空，直接跳过登录界面
+            Intent i = new Intent(MainActivity.this, AtyTimeline.class);
+            i.putExtra(Config.KEY_TOKEN, token);
+            i.putExtra(Config.KEY_USER, user);
+            startActivity(i);
+        }else{
             Intent x = new Intent(MainActivity.this, AtyLogin.class);
             startActivity(x);
-   //     }
+        }
         //不管是哪种情况，都关闭主界面。
         finish();
 

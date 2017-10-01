@@ -4,48 +4,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
 
     tools:context="com.zqw.secrect.MainActivity">
-
-    <LinearLayout
+    <!--
+    <RelativeLayout
         android:id="@+id/lin_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp">
 
         <ImageView
             android:id="@+id/img_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:src="@mipmap/head_portrait"
-            />
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="匿名用户"/>
+            android:text="匿名用户"
+            android:textColor="#76a0d1"
+            android:textSize="14sp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/img_head"/>
+
+        <TextView
+            android:id="@+id/tv_user_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="武汉市 * 双鱼座"
+            android:textSize="8sp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/img_head"/>
+
+        <TextView
+            android:id="@+id/tv_msg_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:text="刚刚"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+    -->
+
+    <include
+        layout="@layout/message_top" />
 
 
-    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/Separated" />
+
+    <TextView
+        android:id="@+id/tvCellLabel_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/tvCellLabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:padding="5dp"/>
 
 
-    <View
-        android:layout_width="2px"
-        android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:background="@color/Separated" />
-
+    <!--
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:descendantFocusability="blocksDescendants">
 
         <ImageButton
@@ -99,8 +138,11 @@
             android:padding="5dp"
             android:layout_toRightOf="@id/img_comment"
             android:layout_centerVertical="true"/>
-
     </RelativeLayout>
+    -->
+
+    <include
+        layout="@layout/message_bottom" />
 
 
 </LinearLayout>

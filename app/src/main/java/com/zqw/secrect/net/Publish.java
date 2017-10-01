@@ -11,7 +11,7 @@ import org.json.JSONObject;
  */
 public class Publish {
 
-    public Publish(String user, String token, String msg, final SuccessCallback successCallback, final FailCallback failCallback){
+    public Publish(String user, String token, String msgTitle, String msg, final SuccessCallback successCallback, final FailCallback failCallback){
         new NetConnection(Config.SERVER_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
@@ -54,6 +54,7 @@ public class Publish {
         }, Config.KEY_ACTION, Config.ACTION_PUBLISH,
                 Config.KEY_USER, user,
                 Config.KEY_TOKEN, token,
+                Config.KEY_MSG_TITLE, msgTitle,
                 Config.KEY_MSG_CONTEXT, msg);
     }
 

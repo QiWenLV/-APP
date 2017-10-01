@@ -80,7 +80,7 @@ public class AtyPubMessage extends BaseActivity{
                         break;
                     }
 
-                    new Publish(user, token, etMsgContent.getText().toString(), new Publish.SuccessCallback() {
+                    new Publish(user, token, etMsgTitle.getText().toString(), etMsgContent.getText().toString(), new Publish.SuccessCallback() {
                         @Override
                         public void onSuccess() {
                             setResult(Config.ACITVITY_RESULT_NEED_REFRESH); //回调

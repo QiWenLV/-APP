@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
 import com.zqw.secrect.net.Comment;
 
@@ -50,8 +51,10 @@ public class AtyMessageCommentListAdapter extends BaseAdapter {
 
         ListCell cell = null;
         if (view == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.aty_timeline_list_cell, null);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.aty_comment_list_cell, null);
             cell = new ListCell();
+
+
             cell.tvCellLabel = (TextView) view.findViewById(R.id.tvCellLabel);
 
             view.setTag(cell);
@@ -61,7 +64,15 @@ public class AtyMessageCommentListAdapter extends BaseAdapter {
 
         Comment comment = getItem(i);
 
-        cell.tvCellLabel.setText(comment.getContent());
+
+        if(comment.getType().equals(Config.COMMENT_TYPE_COMMENT)){
+            cell.tvCellLabel.setText(comment.getContent());
+        }else if((comment.getType().equals(Config.COMMENT_TYPE_REPLY))){
+            cell.tvCellLabel.setText("回复 "+comment.getUser() + ":" + comment.getContent());
+        }
+
+
+
 
         return view;
     }
@@ -77,6 +88,7 @@ public class AtyMessageCommentListAdapter extends BaseAdapter {
     }
 
     private  class ListCell{
+
         TextView tvCellLabel;
     }
 }

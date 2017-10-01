@@ -11,7 +11,7 @@ import org.json.JSONObject;
  */
 public class PubComment {
 
-    public PubComment(String user, String token, String content, String msgId, final SuccessCallback successCallback, final FailCallback failCallback){
+    public PubComment(String user, String token, String content, String msgId, String type, String to_uid, final SuccessCallback successCallback, final FailCallback failCallback){
 
         new NetConnection(Config.SERVER_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
             @Override
@@ -54,7 +54,9 @@ public class PubComment {
                 Config.KEY_USER, user,
                 Config.KEY_TOKEN, token,
                 Config.KEY_CONTENT, content,
-                Config.KEY_MSG_ID, msgId);
+                Config.KEY_MSG_ID, msgId,
+                Config.KEY_COMMENT_TYPE, type,
+                Config.KEY_COMMENT_TOUID, to_uid);
     }
 
 

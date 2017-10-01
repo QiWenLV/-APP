@@ -50,6 +50,10 @@ public class AtyRegistered extends Activity{
                     return;
                 }
                 if(TextUtils.isEmpty(etPhoneNumber.getText())){
+                    Toast.makeText(AtyRegistered.this, "手机号不能为空！", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(etEmail.getText())){
                     Toast.makeText(AtyRegistered.this, "邮箱不能为空！", Toast.LENGTH_LONG).show();
                     return;
                 }

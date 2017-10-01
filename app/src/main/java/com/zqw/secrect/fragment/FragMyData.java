@@ -1,11 +1,11 @@
 package com.zqw.secrect.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +21,14 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.zqw.secrect.Config;
 import com.zqw.secrect.R;
+import com.zqw.secrect.activity.AtyLogin;
 import com.zqw.secrect.net.HttpMethod;
+import com.zqw.secrect.net.MyData;
 import com.zqw.secrect.net.NetConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,11 @@ public class FragMyData extends Fragment implements View.OnClickListener {
 
     private String user;
     private String token;
+
+    static private String Num_Message = null;
+    static private String Num_Comment = null;
+    static private String Num_Collection = null;
+    static private Bitmap Image;
 
     private List<LocalMedia> selectList = new ArrayList<>();
 
@@ -74,6 +80,9 @@ public class FragMyData extends Fragment implements View.OnClickListener {
      */
     private void initView(View v) {
         hear_image = (ImageButton) v.findViewById(R.id.iv_head_portrait);
+        hear_image.setMaxWidth(70);
+        hear_image.setMaxHeight(70);
+
         tvUser = (TextView) v.findViewById(R.id.tv_user_name);
         tvNumMessage = (TextView) v.findViewById(R.id.tv_num_message);
         tvNumComment = (TextView) v.findViewById(R.id.tv_num_comment);
@@ -88,7 +97,48 @@ public class FragMyData extends Fragment implements View.OnClickListener {
         layoutComment.setOnClickListener(this);
         layoutCollection.setOnClickListener(this);
 
+        tvUser.setText(user);
 
+        if(Num_Message == null){
+            loadData();
+        }else{
+            tvNumMessage.setText(Num_Message);
+            tvNumComment.setText(Num_Comment);
+            tvNumCollection.setText(Num_Collection);
+            hear_image.setImageBitmap(Image);
+        }
+
+
+    }
+
+
+    private void  loadData(){
+        final ProgressDialog pd = ProgressDialog.show(getActivity(), "..." , "正在加载...");
+        new MyData(user, token, new MyData.SuccessCallback() {
+            @Override
+            public void onSuccess(String Num_message, String Num_comment, String Num_collection, String headImage) {
+                pd.dismiss();
+                Num_Message = Num_message;
+                Num_Comment = Num_comment;
+                Num_Collection = Num_collection;
+
+                tvNumMessage.setText(Num_message);
+                tvNumComment.setText(Num_comment);
+                tvNumCollection.setText(Num_collection);
+
+                Bitmap image = Config.convertStringToIcon(headImage);
+                Image = image;
+
+                hear_image.setImageBitmap(image);
+
+            }
+        }, new MyData.FailCallback() {
+            @Override
+            public void onFail() {
+                pd.dismiss();
+                Toast.makeText(getActivity(), "数据读取失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -97,22 +147,31 @@ public class FragMyData extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.iv_head_portrait:
                 PictureSelector.create(FragMyData.this)
-                        .openGallery(PictureMimeType.ofImage())
-                        .minSelectNum(1)
-                        .maxSelectNum(1)
-                        .selectionMode(PictureConfig.SINGLE)
-                        .previewImage(true)
-                        .isCamera(true)
-                        .enableCrop(true)
-                        .compress(false)
-                        .circleDimmedLayer(true)
-                        .showCropFrame(false)
-                        .showCropGrid(false)
-                        .previewEggs(true)
+                        .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
+                        .minSelectNum(1)        // 最大图片选择数量 int
+                        .maxSelectNum(1)        // 最小选择数量 int
+                        .selectionMode(PictureConfig.SINGLE)    // 多选 or 单选
+                        .previewImage(true)     // 是否可预览图片
+                        .isCamera(true)         // 是否显示拍照按钮
+                        .enableCrop(true)       // 是否裁剪
+                        //.compress(false)        // 是否压缩
+                        //.compressMode(PictureConfig.LUBAN_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
+                        .withAspectRatio(1, 1)      //int 裁剪比例
+                        .cropWH(120, 120)// 裁剪宽高比，设置如果大于图片本身宽高则无效 int
+                        .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示
+                        .freeStyleCropEnabled(false)// 裁剪框是否可拖拽
+                        .circleDimmedLayer(false)//是否圆形裁剪 true or false
+                        .showCropFrame(true)     //是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                        .showCropGrid(true)      //是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                        .previewEggs(true)       //预览图片时 是否增强左右滑动图片体验
+                        .rotateEnabled(true)     // 裁剪是否可旋转图片 true or false
+                        .scaleEnabled(true)      // 裁剪是否可放大缩小图片 true or false
                         .forResult(PictureConfig.CHOOSE_REQUEST);
                 break;
             case R.id.tv_user_name:
                 Toast.makeText(getActivity(), "点击了用户名", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), AtyLogin.class);
+                startActivity(i);
                 break;
             case R.id.lin_num_message:
                 Toast.makeText(getActivity(), "点击了消息数量", Toast.LENGTH_SHORT).show();
@@ -135,20 +194,16 @@ public class FragMyData extends Fragment implements View.OnClickListener {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择
                     selectList = PictureSelector.obtainMultipleResult(data);
-                    // adapter.setList(selectList);
-                    // adapter.notifyDataSetChanged();
-                    // DebugUtil.i(TAG, "onActivityResult:" + selectList.size());
-                    for (LocalMedia a : selectList) {
-                        Bitmap imageBitmap = BitmapFactory.decodeFile(a.getCutPath());
 
-                        String headImage = convertIconToString(imageBitmap);
-                       // Log.i("TEXTC", "这是原版"+headImage);
+                    for (LocalMedia a : selectList) {
+                        Bitmap imageBitmap = BitmapFactory.decodeFile(a.getCutPath()); //取压缩后的图片
+
+                        String headImage = Config.convertIconToString(imageBitmap);
 
                         new UqloadImage(user, token, headImage, new UqloadImage.SuccessCallback() {
                             @Override
-                            public void onSuccess(String s) {
-                                Bitmap image = convertStringToIcon(s);
-                                hear_image.setImageBitmap(image);
+                            public void onSuccess() {
+                                loadData();
                             }
                         }, new UqloadImage.FailCallback() {
                             @Override
@@ -175,8 +230,8 @@ public class FragMyData extends Fragment implements View.OnClickListener {
                         switch (obj.getInt(Config.KEY_STATUS)) {
                             case 1:
                                 if (successCallback != null) {
-                                    String s = obj.getString(Config.KEY_HERD_IMAGE);
-                                    successCallback.onSuccess(s);
+                                  //  String s = obj.getString(Config.KEY_HERD_IMAGE);
+                                    successCallback.onSuccess();
                                 }
                                 break;
                             default:
@@ -204,7 +259,7 @@ public class FragMyData extends Fragment implements View.OnClickListener {
 
 
         public interface SuccessCallback{
-            void onSuccess(String s);
+            void onSuccess();
         }
 
         public static interface FailCallback{
@@ -265,47 +320,7 @@ public class FragMyData extends Fragment implements View.OnClickListener {
 //    }
 
 
-    /**
-     * 图片转成string
-     *
-     * @param bitmap
-     * @return
-     */
-    public static String convertIconToString(Bitmap bitmap)
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] appicon = baos.toByteArray();// 转为byte数组
-        return Base64.encodeToString(appicon, Base64.DEFAULT);
 
-    }
-
-
-    /**
-     * 将字符串转化为bitmap
-     * @param st
-     * @return
-     */
-    public static Bitmap convertStringToIcon(String st)
-    {
-        // OutputStream out;
-        Bitmap bitmap = null;
-        try
-        {
-            // out = new FileOutputStream("/sdcard/aa.jpg");
-            byte[] bitmapArray;
-            bitmapArray = Base64.decode(st, Base64.DEFAULT);
-            bitmap =
-                    BitmapFactory.decodeByteArray(bitmapArray, 0,
-                            bitmapArray.length);
-            // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            return bitmap;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
 
 
 }
